@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Paws on the EcoTrail</title>
+<style>
+:root{
+  --ink:#314132;
+  --muted:#6b735e;
+  --sage:#6f9254;
+  --sage-dark:#3f6f34;
+  --sage-soft:#edf5e5;
+  --cream:#fff8e8;
+  --cream-2:#fffdf5;
+  --paper:rgba(255,248,230,.91);
+  --line:rgba(103,125,78,.25);
+  --gold:#f1b94d;
+  --rose:#df8d98;
+  --shadow:0 18px 42px rgba(66,78,50,.18);
+  --soft-shadow:0 9px 22px rgba(66,78,50,.10);
+  --radius:28px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:ui-rounded,"Trebuchet MS",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink)}
+body{
+  background:#eef7e5 url("assets/bg_koi_grass.png") center/cover fixed no-repeat;
+  overflow-x:hidden;
+}
+button,input,select,textarea{font:inherit}
+button{border:0;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.app{
+  width:min(100%,520px);
+  min-height:100vh;
+  margin:0 auto;
+  padding:18px 14px 38px;
+}
+.screen{animation:fade .22s ease-out}
+@keyframes fade{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.paper{
+  background:linear-gradient(180deg,rgba(255,251,235,.94),rgba(255,246,221,.91));
+  border:1px solid rgba(129,143,88,.24);
+  box-shadow:var(--shadow);
+  border-radius:34px;
+  backdrop-filter:blur(6px);
+}
+.main-card{padding:18px}
+.hidden{display:none!important}
+.floral-divider{
+  display:block;width:min(310px,82%);height:38px;object-fit:contain;margin:8px auto 12px;opacity:.86;
+}
+.cat-sleep{
+  width:min(230px,66%);
+  max-height:120px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto -4px;
+  filter:drop-shadow(0 10px 10px rgba(78,82,48,.13));
+}
+.title{
+  margin:0;
+  color:#3d6b38;
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:800;
+  line-height:.9;
+  letter-spacing:-.045em;
+  font-size:clamp(2.7rem,13vw,4.6rem);
+  text-align:center;
+}
+.subtitle-ribbon{
+  width:max-content;max-width:100%;
+  margin:14px auto 8px;
+  padding:8px 16px;
+  border-radius:999px;
+  background:#e7efd4;
+  border:1px solid rgba(98,122,69,.22);
+  color:#597148;
+  font-weight:800;
+  text-align:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
+}
+.login-card{
+  margin-top:8px;
+  padding:22px 18px 20px;
+  position:relative;
+  overflow:hidden;
+}
+.login-card:before{
+  content:"";
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 50% 2%, rgba(255,255,255,.9) 0 38px, transparent 39px),
+    linear-gradient(180deg, rgba(255,255,255,.48), transparent 44%);
+  pointer-events:none;
+}
+.login-content{position:relative;z-index:1}
+.form-panel{
+  margin-top:12px;
+}
+.field{margin:14px 0}
+label{display:block;margin:0 0 7px;font-weight:950;color:#4e633f}
+.label-leaf:before{content:"🍃";margin-right:6px}
+input,select,textarea{
+  width:100%;
+  border:1.5px solid rgba(101,121,76,.28);
+  border-radius:19px;
+  background:rgba(255,253,246,.88);
+  color:var(--ink);
+  padding:13px 15px;
+  outline:0;
+  box-shadow:inset 0 2px 8px rgba(102,91,44,.05),0 3px 9px rgba(76,78,51,.05);
+}
+select{appearance:auto}
+textarea{min-height:90px;resize:vertical;line-height:1.42}
+input:focus,select:focus,textarea:focus{border-color:#7cae6b;box-shadow:0 0 0 4px rgba(124,174,107,.18)}
+.err{color:#a0454f;font-weight:950;margin-top:8px}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;
+  padding:12px 18px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#7fa85d,#4f7f36);
+  color:#fffdf0;
+  font-weight:950;
+  box-shadow:0 8px 18px rgba(72,112,55,.25), inset 0 1px 0 rgba(255,255,255,.25);
+  text-shadow:0 1px 0 rgba(0,0,0,.14);
+}
+.btn.primary{width:100%;font-size:1.2rem;margin-top:16px}
+.btn.secondary{
+  background:rgba(255,253,245,.86);
+  color:#557443;
+  border:1.5px solid rgba(101,121,76,.32);
+  box-shadow:0 5px 12px rgba(66,78,50,.08);
+  text-shadow:none;
+}
+.btn.gold{background:linear-gradient(180deg,#ffd66d,#e8ad39);color:#553e00}
+.btn.rose{background:#ffe6e9;color:#8b3c45;text-shadow:none;box-shadow:none}
+.btn-icon{width:22px;height:22px;object-fit:contain}
+.secondary-wide{width:100%;margin-top:10px}
+.footer{
+  text-align:center;color:#6a725e;font-size:.82rem;margin-top:16px;
+  text-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+.topbar{
+  position:sticky;top:0;z-index:20;
+  margin:-18px -14px 14px;
+  padding:10px 14px;
+  background:rgba(246,248,225,.72);
+  border-bottom:1px solid rgba(103,125,78,.15);
+  backdrop-filter:blur(10px);
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.top-left{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.group-pill,.scorepill,.tag,.status{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:999px;
+  background:rgba(255,253,244,.88);
+  border:1px solid rgba(103,125,78,.22);
+  padding:7px 11px;
+  color:#486f40;
+  font-weight:950;
+}
+.group-pill{max-width:100%;min-width:0;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.15;word-break:break-word}
+.scorepill{color:#674f0a;background:#fff6dd;white-space:nowrap;flex:0 0 auto}
+.small{font-size:.88rem;color:var(--muted);line-height:1.42}
+.mini{font-size:.78rem;color:var(--muted);line-height:1.35}
+.h1{
+  margin:0;color:#3d6b38;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(1.75rem,7vw,2.55rem);
+  line-height:1.05;
+}
+.notice{background:#fff6cc;border:1px solid #eed37c;color:#604700;border-radius:18px;padding:12px;line-height:1.4}
+.success{background:#e8f5df;border-color:#b8ddb0;color:#276738}
+.danger{background:#ffe9ec;border-color:#f1b3bb;color:#8b3c45}
+.tag.bonus{background:#eef6ff;color:#36709e;border-color:#b7d5ed}
+/* Mission board */
+.board-header{
+  padding:16px;
+  margin-bottom:14px;
+  display:grid;
+  grid-template-columns:86px 1fr;
+  align-items:center;
+  gap:10px;
+}
+.board-header .cat-sleep{width:96px;margin:0}
+.safety-header{grid-template-columns:76px 1fr}
+.safety-header .cat-sleep{width:76px;max-height:76px;margin:0;justify-self:center}
+.board-title{font-family:Georgia,"Times New Roman",serif;font-size:2rem;line-height:.95;color:#3d6b38;font-weight:850}
+.board-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.segment-title{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:20px auto 12px;
+  color:#3f6f34;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:1.36rem;
+  font-weight:850;
+}
+.segment-title:before,.segment-title:after{content:"";width:42px;height:1px;background:rgba(95,126,69,.35)}
+.mission-list{display:grid;gap:12px}
+.mission{
+  width:100%;
+  text-align:left;
+  display:grid;
+  grid-template-columns:76px 1fr auto;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+  border-radius:24px;
+  background:linear-gradient(180deg,rgba(255,252,241,.94),rgba(255,248,228,.88));
+  border:1.5px solid rgba(103,125,78,.22);
+  box-shadow:var(--soft-shadow);
+  min-height:96px;
+  color:var(--ink);
+  transition:.14s ease;
+}
+.mission:not(:disabled):active{transform:scale(.985)}
+.mission.available{
+  border-color:rgba(91,151,63,.62);
+  box-shadow:0 0 0 4px rgba(98,161,65,.10),0 11px 22px rgba(66,78,50,.13);
+}
+.mission.completed{background:linear-gradient(180deg,#fbfff3,#eef8e6)}
+.mission.locked{opacity:.64;filter:saturate(.75)}
+.mission-icon{
+  width:70px;height:70px;border-radius:22px;
+  background:linear-gradient(180deg,#fff9e8,#f5efd7);
+  border:1px solid rgba(103,125,78,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.74),0 4px 12px rgba(66,78,50,.08);
+  display:grid;place-items:center;
+}
+.mission-icon img{width:60px;height:60px;object-fit:contain}
+.mission h3{margin:0 0 4px;color:#3d6b38;font-size:1.12rem;line-height:1.05}
+.mission p{margin:0;color:#61705b;font-size:.86rem;line-height:1.27}
+.status{
+  justify-self:end;
+  white-space:nowrap;
+  font-size:.76rem;
+  padding:7px 9px;
+}
+.status.done{background:#e4f3da;color:#397336}
+.status.lock{background:#fff1d4;color:#7c6129}
+.status.current{background:#edf6df;color:#4d753e}
+.status.bonus{background:#e9f5ff;color:#39719b}
+.chev{font-size:1.45rem;color:#78935e;line-height:1}
+.code-card,.task-card,.before-card,.facilitator-box,.result-card,.safety-card{
+  background:linear-gradient(180deg,rgba(255,252,241,.94),rgba(255,248,228,.88));
+  border:1.5px solid rgba(103,125,78,.22);
+  border-radius:26px;
+  box-shadow:var(--soft-shadow);
+  padding:15px;
+}
+.code-card{margin:10px 0}
+.grid{display:grid;gap:12px}
+.grid.two{grid-template-columns:1fr 1fr}
+/* Station pages */
+.station-head{
+  display:grid;
+  grid-template-columns:48px 62px 1fr auto;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  margin-bottom:14px;
+}
+.back-btn{
+  width:44px;height:44px;border-radius:999px;
+  background:rgba(255,253,246,.9);
+  border:1px solid rgba(103,125,78,.2);
+  color:#3f6f34;
+  font-size:1.5rem;
+  box-shadow:0 4px 12px rgba(66,78,50,.08);
+}
+.station-icon{
+  width:58px;height:58px;border-radius:20px;
+  background:#fff8e4;border:1px solid rgba(103,125,78,.18);
+  display:grid;place-items:center;
+}
+.station-icon img{width:50px;height:50px;object-fit:contain}
+.station-head h1{margin:0;color:#3d6b38;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;line-height:1}
+.pts-badge{background:#fff3cf;border:1px solid rgba(190,145,55,.24);border-radius:999px;padding:8px 10px;color:#72550d;font-weight:950;white-space:nowrap}
+.before-card{position:relative;overflow:hidden}
+.before-title{display:flex;align-items:center;gap:8px;color:#3d6b38;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;font-weight:850;margin:0 0 10px}
+.before-grid{display:grid;grid-template-columns:1fr 94px;gap:10px;align-items:center}
+.before-list{display:grid;gap:9px}
+.before-item{display:flex;gap:8px;align-items:flex-start;color:#4f5e4b;line-height:1.3}
+.before-item:before{content:"🍃";font-size:.9rem}
+.before-art{width:94px;height:94px;border-radius:22px;background:linear-gradient(180deg,#f2f8e7,#fff7df);display:grid;place-items:center}
+.before-art img{width:78px;height:78px;object-fit:contain}
+.stepbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin:14px 0 12px;
+}
+.step-text{font-weight:950;color:#547247}
+.leaf-dots{display:flex;gap:7px}
+.leaf-dot{width:10px;height:10px;border-radius:999px;background:#d5ddc5}
+.leaf-dot.on{background:#6f9d57;box-shadow:0 0 0 4px rgba(111,157,87,.13)}
+.task-card{margin:12px 0}
+.task-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 10px}
+.task-title h3{margin:0;color:#3d6b38;font-family:Georgia,"Times New Roman",serif;font-size:1.28rem}
+.task-tag{display:inline-flex;border-radius:999px;padding:6px 9px;background:#edf5e5;color:#577448;font-weight:950;font-size:.76rem}
+.leaf-clue{
+  min-height:110px;border-radius:20px;border:1px dashed rgba(103,125,78,.35);
+  background:linear-gradient(135deg,rgba(244,249,235,.9),rgba(255,248,229,.8));
+  display:grid;place-items:center;text-align:center;color:#6a765c;font-weight:850;
+}
+.input-grid{display:grid;gap:10px}
+.form-actions{
+  position:sticky;bottom:10px;z-index:10;margin-top:14px;
+  display:grid;grid-template-columns:1fr 1.25fr;gap:10px;
+  background:rgba(255,248,230,.82);
+  border:1px solid rgba(103,125,78,.18);
+  border-radius:26px;
+  padding:10px;
+  box-shadow:0 -8px 28px rgba(66,78,50,.13);
+  backdrop-filter:blur(8px);
+}
+.form-actions.single{grid-template-columns:1fr}
+.station-tip{
+  display:flex;gap:10px;align-items:center;
+  background:rgba(255,250,236,.88);
+  border:1px solid rgba(103,125,78,.18);
+  border-radius:22px;
+  padding:10px 12px;
+  color:#61705b;
+  margin:12px 0;
+}
+.station-tip img{width:66px;height:46px;object-fit:contain;margin-left:auto}
+.timer{
+  font-size:3.2rem;font-weight:1000;text-align:center;color:#3d6b38;
+  background:#e9f6fb;border:1px solid rgba(78,154,184,.20);
+  border-radius:24px;padding:16px;margin:12px 0;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(78,154,184,.06);transform:scale(1.01)}}
+.check label{
+  display:flex;gap:10px;align-items:flex-start;margin:8px 0;
+  background:rgba(255,253,246,.86);
+  border:1px solid rgba(103,125,78,.18);
+  padding:11px;border-radius:16px;color:#415044;font-weight:800;
+}
+.check input{width:auto;margin-top:3px}
+.table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.table th{text-align:left;color:var(--muted);font-size:.78rem;padding:0 8px}
+.table td{background:#fffdf6;padding:10px 8px;border-top:1px solid rgba(103,125,78,.14);border-bottom:1px solid rgba(103,125,78,.14)}
+.table td:first-child{border-left:1px solid rgba(103,125,78,.14);border-radius:14px 0 0 14px}
+.table td:last-child{border-right:1px solid rgba(103,125,78,.14);border-radius:0 14px 14px 0}
+.scorebig{font-size:3.25rem;font-weight:1000;color:#3d6b38;margin:5px 0}
+.stamp{display:inline-flex;align-items:center;gap:8px;background:#fffdf6;border:2px dashed rgba(95,126,69,.35);border-radius:22px;padding:10px 14px;font-weight:950;color:#3d6b38}
+.result-card{text-align:center}
+
+.guide-box{
+  margin:12px 0;
+  border:1px solid rgba(103,125,78,.22);
+  border-radius:20px;
+  background:rgba(255,253,246,.82);
+  overflow:hidden;
+}
+.guide-box summary{
+  cursor:pointer;
+  padding:11px 13px;
+  font-weight:950;
+  color:#4e733d;
+}
+.guide-box img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-top:1px solid rgba(103,125,78,.16);
+}
+.visual-card{
+  margin:10px 0 14px;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(103,125,78,.18);
+  background:#fffdf6;
+  box-shadow:0 6px 16px rgba(66,78,50,.08);
+}
+.visual-card img{display:block;width:100%;height:auto;object-fit:contain}
+.subheading{
+  margin:18px 0 8px;
+  color:#3d6b38;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:1.18rem;
+}
+.plant-study-card{overflow:hidden}
+.summary-card{
+  background:linear-gradient(180deg,rgba(255,252,241,.96),rgba(255,248,228,.94));
+  border:1.5px solid rgba(103,125,78,.22);
+  border-radius:28px;
+  box-shadow:var(--soft-shadow);
+  padding:18px;
+  margin:12px 0;
+}
+.summary-card h1{margin:0 0 4px;color:#3d6b38;font-family:Georgia,"Times New Roman",serif;font-size:1.55rem;line-height:1.05}
+.summary-card h2{margin:0 0 10px;color:#4f6b42;font-size:1.05rem}
+.screenshot-note{background:#fff6cc;border:1px dashed #d5b95a;border-radius:16px;padding:9px 11px;color:#6b5413;font-weight:900;line-height:1.35}
+.summary-row{display:grid;gap:4px;padding:9px 0;border-bottom:1px solid rgba(103,125,78,.14)}
+.summary-row strong{color:#3f6f34;font-size:.88rem}
+.summary-row span{white-space:pre-wrap;line-height:1.38;color:#344634}
+.summary-nav{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 30px}
+
+
+.sweet-card{
+  background:linear-gradient(180deg,#fffdf1,#f4f9e9);
+  border:1.5px solid rgba(103,125,78,.28);
+  border-radius:30px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  min-height:430px;
+}
+.sweet-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.leaf-number{display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50% 50% 50% 12px;background:#3f6f34;color:white;font-size:1.8rem;font-weight:950;box-shadow:var(--soft-shadow)}
+.sweet-card h1{font-family:Georgia,"Times New Roman",serif;color:#3d6b38;font-size:2rem;line-height:1.05;margin:8px 0 14px}
+.sweet-body{font-size:1.02rem;line-height:1.5;color:#314132}
+.sweet-body ul{padding-left:22px;margin:8px 0}.sweet-body li{margin:8px 0}
+.danger-card{background:linear-gradient(180deg,#fff9ed,#fff1ee);border-color:rgba(190,75,75,.25)}
+.danger-card h1{color:#b83b36}.danger-card .leaf-number{background:#c7473f}
+.leaf-dots.large{justify-content:center;margin-top:24px}
+.check.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.check.options label{background:rgba(255,253,246,.9);border:1px solid rgba(103,125,78,.2);border-radius:16px;padding:11px;margin:0;font-weight:850;color:#4e633f}
+
+
+/* Laptop / classroom group-use layout */
+@media(min-width:820px){
+  .app{
+    width:min(100%,1120px);
+    padding:24px 28px 44px;
+  }
+  .login-card{
+    max-width:780px;
+    margin:24px auto;
+  }
+  .main-card,.station-shell{
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .title{font-size:clamp(3.2rem,6.2vw,5.1rem)}
+  .h1{font-size:clamp(2rem,3.4vw,3rem)}
+  .topbar{
+    margin:-24px -28px 18px;
+    padding:12px 28px;
+  }
+  .board-header{
+    grid-template-columns:112px 1fr;
+    padding:20px;
+  }
+  .board-header .cat-sleep{width:118px;max-height:100px}
+  .safety-header{grid-template-columns:86px 1fr}
+  .safety-header .cat-sleep{width:84px;max-height:84px}
+  .board-title{font-size:2.35rem}
+  .mission-list{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+  }
+  .mission{
+    min-height:108px;
+    grid-template-columns:76px 1fr auto;
+    padding:12px;
+  }
+  .station-head{
+    grid-template-columns:52px 70px 1fr auto;
+    padding:12px 16px;
+  }
+  .station-head h1{font-size:1.65rem}
+  .station-icon{width:64px;height:64px}
+  .station-icon img{width:54px;height:54px}
+  .before-grid{
+    grid-template-columns:minmax(0,1fr) 118px;
+    gap:18px;
+  }
+  .before-art{width:118px;height:118px}
+  .before-art img{width:96px;height:96px}
+  .grid.two{grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr)}
+  textarea{min-height:110px}
+  .check.options{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .form-actions{
+    bottom:18px;
+    max-width:720px;
+    margin-left:auto;
+  }
+  .summary-nav{justify-content:center}
+}
+
+@media(max-width:420px){
+  .app{padding:12px 10px 32px}
+  .main-card{padding:14px}
+  .board-header{grid-template-columns:68px 1fr}
+  .board-header .cat-sleep{width:76px}
+  .safety-header{grid-template-columns:64px 1fr}
+  .safety-header .cat-sleep{width:62px;max-height:62px}
+  .board-title{font-size:1.58rem}
+  .mission{grid-template-columns:62px 1fr;gap:10px}
+  .mission .status,.mission .chev{grid-column:2;justify-self:start;margin-top:4px}
+  .mission-icon{width:58px;height:58px;border-radius:18px}
+  .mission-icon img{width:50px;height:50px}
+  .station-head{grid-template-columns:42px 54px 1fr;gap:8px}
+  .pts-badge{grid-column:2/4;justify-self:start}
+  .grid.two,.before-grid{grid-template-columns:1fr}
+  .before-art{display:none}
+  .form-actions{grid-template-columns:1fr}
+  .check.options{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+<script>
+const GAS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbz-5LkhmZkasTCcbFO8KdUPn3lU18VV0gQ40PDsqKTACskH2UYug-vAFAlCNWivN57j/exec';
+const CLASSROOM_CODE='PAWPRINT';
+const FACILITATOR_PIN='2468';
+const SAVE_KEY='paws_ecotrail_v12_laptop_guided_journey';
+
+const ASSET={
+  bg:'assets/bg_koi_grass.png',
+  catSleep:'assets/cat_sleeping_ui.png',
+  divider:'assets/ui_leaf_divider.png',
+  ecotrail:'assets/icon_ecotrail.png',
+  home:'assets/icon_home.png',
+  plant:'assets/icon_plant.png',
+  hearing:'assets/icon_hearing.png',
+  smell:'assets/icon_smell.png',
+  taste:'assets/icon_taste.png',
+  kim:'assets/icon_kim.png',
+  promise:'assets/icon_promise.png',
+  reward:'assets/icon_reward.png',
+  lock:'assets/icon_lock.png',
+  unlock:'assets/icon_unlock.png',
+  next:'assets/icon_next.png',
+  back:'assets/icon_back.png',
+  plantA:'assets/plant_a_jambu_rubbing.png',
+  plantB:'assets/plant_b_lotus_rubbing.png',
+  guideArrangement:'assets/guide_leaf_arrangement.png',
+  guideShape:'assets/guide_leaf_shape.png',
+  guideVenation:'assets/guide_leaf_venation.png',
+  guideMargin:'assets/guide_leaf_margin.png',
+  jambuFlower:'assets/jambu_flower.png',
+  jambuFruit:'assets/jambu_fruit_seeds.png',
+  lotusFlower:'assets/lotus_flower.png',
+  lotusSeed:'assets/lotus_seed_pod_seeds.png'
+};
+const MISSIONS={
+  survey:{name:'EcoTrail Area Survey', max:20, seg:1, icon:ASSET.hearing, help:'Begin with quiet listening and observation at the EcoTrail.', optional:false},
+  plant:{name:'Plant Study: A & B', max:30, seg:1, icon:ASSET.plant, help:'Use leaf clues first, then study the revealed plants.', optional:false},
+  taste:{name:'Mystery Taste Challenge', max:10, seg:2, icon:ASSET.taste, help:'Taste the provided mystery leaf sample safely.', optional:false},
+  smell:{name:'Mystery Scent Challenge', max:15, seg:2, icon:ASSET.smell, help:'Observe and compare three mystery leaf scents.', optional:false},
+  sight:{name:"Kim’s Tray", max:20, baseMax:15, bonusMax:5, seg:2, icon:ASSET.kim, help:'Timed memory challenge', optional:false},
+  promise:{name:'Good Turn for Nature', max:10, seg:2, icon:ASSET.promise, help:'Turn today’s observations into one action message for nature.', optional:false}
+};
+const STATE0={slot:'',groupName:'',safety:false,segment2:false,completed:{},scores:{},answers:{}};
+let state=load();
+let timerId=null;
+
+const REASON_WORDS=['attract','animal','insect','pollinator','defence','defense','protect','herbivore','pest','chemical','survive','recognise','recognize'];
+
+function load(){try{return {...STATE0,...JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')}}catch(e){return {...STATE0}}}
+function save(){localStorage.setItem(SAVE_KEY,JSON.stringify(state))}
+function render(html){document.getElementById('app').innerHTML=`<main class="screen">${html}</main>`}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function norm(s){return String(s||'').toLowerCase().trim()}
+function data(form){return Object.fromEntries(new FormData(form).entries())}
+function has(s,n=1){return norm(s).length>=n}
+function effortAttempt(s){
+  const cleaned=norm(s).replace(/[^a-z0-9]/g,'');
+  if(!cleaned) return false;
+  return !['idk','idontknow','dontknow','dunno','na','nil'].includes(cleaned);
+}
+function containsAny(s,arr){let t=norm(s);return arr.some(k=>t.includes(k))}
+function displayName(){return state.groupName?`Group ${state.slot} — ${state.groupName}`:`Group ${state.slot||''}`}
+function total(){return Object.values(state.scores).reduce((a,b)=>a+Number(b||0),0)}
+function placeholder(){return `<option value="" disabled selected>Select an option</option>`}
+function allStationsComplete(){return Object.keys(MISSIONS).every(id=>!!state.completed[id])}
+function maxLabel(id){const m=MISSIONS[id]; return m.max}
+function statusScore(id){const m=MISSIONS[id]; return id==='sight'?`${state.scores[id]||0} pts`:`${state.scores[id]||0}/${m.max}`}
+
+function init(){
+  if(state.slot && state.groupName) renderResume();
+  else renderLanding();
+}
+
+function heroTitle(){
+  return `<img class="cat-sleep" src="${ASSET.catSleep}" alt="">
+  <h1 class="title">Paws on the<br>EcoTrail</h1>
+  <div class="subtitle-ribbon">A Kim’s Game Naturalist Activity</div>
+  <img class="floral-divider" src="${ASSET.divider}" alt="">`;
+}
+function renderResume(){
+  render(`<section class="paper login-card"><div class="login-content">
+    ${heroTitle()}
+    <div class="result-card">
+      <span class="tag">Saved progress</span>
+      <p class="small">Continue as <strong>${esc(displayName())}</strong>?</p>
+      <button class="btn primary" onclick="state=load(); state.safety?renderBoard():renderSafety()">Continue Quest</button>
+      <button class="btn secondary secondary-wide" onclick="renderLanding()">Start a New Group</button>
+    </div>
+  </div></section><p class="footer">Your adventure. Our planet. 🌸</p>`)
+}
+function renderLanding(){
+  render(`<section class="paper login-card"><div class="login-content">
+    ${heroTitle()}
+    <div class="form-panel">
+      <div class="field"><label class="label-leaf">Assigned Group</label>
+        <select id="slot" required>
+          <option value="" disabled selected>Select your group</option>
+          <option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option><option value="5">Group 5</option>
+        </select>
+      </div>
+      <div class="field"><label class="label-leaf">Group Name</label>
+        <input id="gname" maxlength="24" placeholder="Enter your group name" required>
+      </div>
+      <div id="startErr" class="err"></div>
+      <button class="btn primary" onclick="start()"><span>🍃</span> Begin Quest <span>🐾</span></button>
+      ${state.slot && state.groupName ? `<button class="btn secondary secondary-wide" onclick="renderResume()">Continue Saved Quest</button>` : ''}
+    </div>
+  </div></section><p class="footer">Your adventure. Our planet. 🌸</p>`)
+}
+function start(){
+  const slot=document.getElementById('slot').value;
+  const name=document.getElementById('gname').value.trim();
+  if(!slot || !name){document.getElementById('startErr').textContent='Please select your assigned group and enter a group name.';return}
+  state={...STATE0,slot,groupName:name};
+  save();
+  renderSafety();
+}
+function topbar(){
+  return `<div class="topbar"><div class="top-left"><span class="group-pill">${esc(displayName())}</span></div><span class="scorepill">⭐ ${total()} pts</span></div>`
+}
+function renderSafety(){
+  render(`${topbar()}<section class="paper main-card">
+    <div class="board-header safety-header"><img class="cat-sleep" src="${ASSET.catSleep}" alt=""><div><h1 class="h1">Safety Pledge</h1><p class="small">Tick all before starting.</p></div></div>
+    <div class="safety-card check">
+      <label><input type="checkbox" class="pledge"> Stay with your group.</label>
+      <label><input type="checkbox" class="pledge"> Walk, do not run.</label>
+      <label><input type="checkbox" class="pledge"> Do not pluck leaves, flowers or fruits.</label>
+      <label><input type="checkbox" class="pledge"> Do not taste plants unless given by the facilitator.</label>
+      <label><input type="checkbox" class="pledge"> Observe living things gently.</label>
+    </div>
+    <button class="btn primary" onclick="acceptSafety()">We agree</button>
+  </section>`)
+}
+function acceptSafety(){
+  if([...document.querySelectorAll('.pledge')].some(x=>!x.checked)){alert('Please tick all safety points.');return}
+  state.safety=true; save(); renderBoard();
+}
+function sectionTitle(t){return `<div class="segment-title">${t}</div>`}
+function renderBoard(){
+  if(!state.slot || !state.groupName){renderLanding();return}
+  render(`${topbar()}
+    <section class="paper main-card">
+      <div class="board-header">
+        <img class="cat-sleep" src="${ASSET.catSleep}" alt="">
+        <div><div class="board-title">Paws on the<br>EcoTrail</div>
+          <div class="board-meta"><span class="group-pill">${esc(displayName())}</span><span class="scorepill">⭐ ${total()} pts</span></div>
+        </div>
+      </div>
+      ${sectionTitle('1. EcoTrail Fieldwork')}
+      <p class="small journey-note">Start here after the intro and safety briefing. Complete the area survey and Plant A/B study at the EcoTrail.</p>
+      <div class="mission-list">${['survey','plant'].map(missionCard).join('')}</div>
+      ${sectionTitle('2. Garden Taste & Scent Activities')}
+      ${state.segment2?'':`<div class="code-card"><p class="small">Enter the facilitator code when your group moves to the garden taste and scent activities.</p><div class="grid two"><input id="classCode" placeholder="Next segment code"><button class="btn" onclick="unlockClassroom()">Unlock</button></div></div>`}
+      <div class="mission-list">${['taste','smell'].map(missionCard).join('')}</div>
+      ${sectionTitle('3. Classroom Challenge & Reflection')}
+      <div class="mission-list">${['sight','promise'].map(missionCard).join('')}</div>
+      <div class="btnrow">${allStationsComplete()?`<button class="btn primary" onclick="renderFinal()">View Final Score & Badgework Summary</button>`:`<button class="btn primary" onclick="renderNextAvailable()">Continue Quest</button><button class="btn secondary secondary-wide" onclick="renderFinal()">View Current Score</button>`}</div>
+    </section>`)
+}
+function missionCard(id){
+  const m=MISSIONS[id];
+  const locked=m.seg===2 && !state.segment2;
+  const done=!!state.completed[id];
+  let status = done?`<span class="status done">✓ ${statusScore(id)} · Review</span>`:
+    locked?`<span class="status lock">🔒 Locked</span>`:
+    `<span class="status current">Ready</span>`;
+  let cls=`mission ${done?'completed':locked?'locked':'available'}`;
+  const onclick = locked ? '' : `onclick="openMission('${id}')"`;
+  return `<button class="${cls}" ${locked?'disabled':''} ${onclick}>
+    <span class="mission-icon"><img src="${m.icon}" alt=""></span>
+    <span><h3>${m.name}</h3><p>${m.help}</p></span>
+    ${done || locked ? status : '<span class="chev">›</span>'}
+  </button>`
+}
+function renderNextAvailable(){
+  const order=['survey','plant','taste','smell','sight','promise'];
+  const next=order.find(id=>{
+    const m=MISSIONS[id];
+    if(state.completed[id]) return false;
+    if(m.seg===2 && !state.segment2) return false;
+    return true;
+  });
+  next ? openMission(next) : renderFinal();
+}
+function unlockClassroom(){
+  const v=norm(document.getElementById('classCode').value).toUpperCase();
+  if(v===CLASSROOM_CODE){state.segment2=true; save(); renderBoard()} else alert('Incorrect code.')
+}
+function openMission(id){
+  if(MISSIONS[id].seg===2 && !state.segment2){alert('Unlock the next segment with the facilitator code first.');return}
+  if(state.completed[id]){renderReview(id);return}
+  ({survey:renderSurvey,plant:renderPlant,smell:renderSmell,taste:renderTaste,sight:renderSight,promise:renderPromise}[id]||renderBoard)()
+}
+function stationHeader(id,sub=''){
+  const m=MISSIONS[id];
+  return `<div class="station-head paper">
+    <button class="back-btn" onclick="renderBoard()">‹</button>
+    <span class="station-icon"><img src="${m.icon}" alt=""></span>
+    <div><h1>${m.name}</h1>${sub?`<p class="mini">${sub}</p>`:''}</div>
+    <span class="pts-badge">⭐ ${maxLabel(id)} pts</span>
+  </div>`
+}
+function beforeBeginBox(items, artIcon=''){
+  return `<div class="before-card">
+    <h2 class="before-title">🍃 Before you begin</h2>
+    <div class="before-grid">
+      <div class="before-list">${items.map(i=>`<div class="before-item">${i}</div>`).join('')}</div>
+      <div class="before-art"><img src="${artIcon||ASSET.ecotrail}" alt=""></div>
+    </div>
+  </div>`
+}
+function stepBar(text,step,totalSteps){
+  return `<div class="stepbar"><span class="step-text">${text}</span><span class="leaf-dots">${Array.from({length:totalSteps},(_,i)=>`<span class="leaf-dot ${i<step?'on':''}"></span>`).join('')}</span></div>`
+}
+function formActions(formId,id,label='Submit Mission'){
+  return `<div class="form-actions"><button class="btn secondary" type="button" onclick="saveDraft('${formId}','${id}',true)">Save Draft</button><button class="btn" type="submit">${label}</button></div>`
+}
+function submitMission(id,score,answers){
+  state.completed[id]=true; state.scores[id]=Number(score)||0; state.answers[id]=answers; delete state.answers[id+'_draft']; save(); post(id,score,answers); renderComplete(id);
+}
+function renderComplete(id){
+  const m=MISSIONS[id];
+  const note=id==='taste'?'Keep your taste notes ready for the mini lesson.':id==='smell'?'Keep your scent notes ready for the station mini lesson.':'';
+  render(`${topbar()}<section class="paper main-card"><div class="result-card"><img class="cat-sleep" src="${ASSET.catSleep}" alt=""><div class="stamp">Mission Complete</div><h1 class="h1">${m.name}</h1><div class="scorebig">${state.scores[id]} / ${maxLabel(id)}</div>${note?`<p class="small">${note}</p>`:''}<button class="btn primary" onclick="renderBoard()">Back to Journey</button></div></section>`)
+}
+function renderReview(id){
+  if(id==='plant'){renderPlantReview();return}
+  const m=MISSIONS[id];
+  render(`${topbar()}<section class="paper main-card"><div class="result-card">
+    <div class="stamp">Station Submitted</div><h1 class="h1">${m.name}</h1>
+    <div class="scorebig">${state.scores[id]} / ${maxLabel(id)}</div>
+    <p class="small">This station has already been submitted, so it cannot be edited or resubmitted on this laptop.</p>
+    <div class="btnrow"><button class="btn primary" onclick="renderBoard()">Back to Journey</button><button class="btn secondary secondary-wide" onclick="renderBadgeSummary(1)">View Badgework Summary</button></div>
+  </div></section>`)
+}
+const PLANT_OPTIONS={
+  self:{yes:'Yes',almost:'Almost',no:'No'},
+  arrangement:{alternate:'Alternate',opposite:'Opposite',whorled:'Whorled',single:'Not clearly seen / leaves on separate stalks'},
+  shape:{round:'Round / circular',oval:'Oval / elliptic',lance:'Lance-shaped',heart:'Heart-shaped'},
+  venation:{parallel:'Parallel',pinnate:'Pinnate / Net-like',palmate:'Palmate / Radiating'},
+  margin:{smooth:'Smooth / Entire',toothed:'Toothed / Serrated',lobed:'Lobed'},
+  pollination:{insect:'Insect pollination',wind:'Wind pollination',water:'Water pollination'},
+  dispersal:{animal:'Animal dispersal',water:'Water dispersal',wind:'Wind dispersal',split:'Splitting / explosive dispersal'}
+};
+function plantOptionLabel(kind,value){return esc((PLANT_OPTIONS[kind]&&PLANT_OPTIONS[kind][value])||value||'—')}
+function reviewLine(label,student,correct){
+  const ok=student===correct;
+  return `<div class="summary-row"><strong>${label}</strong><span>${ok?'✅':'🌱'} Your answer: ${plantOptionLabel(label.toLowerCase().includes('pollination')?'pollination':'dispersal',student)}${correct?`<br><small>Expected: ${plantOptionLabel(label.toLowerCase().includes('pollination')?'pollination':'dispersal',correct)}</small>`:''}</span></div>`
+}
+function effortLine(label,value,marks){
+  const ok=effortAttempt(value);
+  return `<div class="summary-row"><strong>${label}</strong><span>${ok?'✅ Effort mark awarded':'— Not awarded'} <small>(${marks} ${marks===1?'pt':'pts'})</small></span></div>`
+}
+function renderPlantReview(){
+  const d=state.answers.plant||{};
+  const plantBlock=(L,name,correctDispersal)=>`<div class="summary-card screenshot-card"><h2>Plant ${L}: ${name}</h2>
+    <p class="small">Text description sections are effort-marked. Pollination and seed dispersal are correctness-marked.</p>
+    ${labelValue('Typed plant name',esc(d['typed'+L]||'—'))}
+    ${labelValue('Self-check',plantOptionLabel('self',d['self'+L]))}
+    ${effortLine('Leaf description',d['leafDesc'+L],1)}
+    ${effortLine('Flower description',d['flowerDesc'+L],1)}
+    ${effortLine('Fruit / seed description',d['seedDesc'+L],1)}
+    ${effortLine('Helpful feature',d['feature'+L],3)}
+    ${reviewLine('Pollination method',d['pollination'+L],'insect')}
+    ${reviewLine('Seed dispersal method',d['dispersal'+L],correctDispersal)}
+  </div>`;
+  render(`${topbar()}<section class="station-shell">
+    ${stationHeader('plant','Review only — submitted station')}
+    <div class="summary-card screenshot-card"><h1>Plant Study Review</h1><p class="screenshot-note">This station has already been submitted, so answers cannot be edited or resubmitted.</p><div class="scorebig">${state.scores.plant} / ${MISSIONS.plant.max}</div></div>
+    ${plantBlock('A','Jambu','animal')}
+    ${plantBlock('B','Lotus','water')}
+    <div class="btnrow"><button class="btn primary" onclick="renderBoard()">Back to Journey</button><button class="btn secondary secondary-wide" onclick="renderBadgeSummary(2)">View Plant Badgework</button></div>
+  </section>`)
+}
+
+function renderSurvey(){
+  render(`${topbar()}<section class="station-shell">
+    ${stationHeader('survey','Clause 1: survey an area')}
+    ${beforeBeginBox(['Close your eyes and listen silently for 60 seconds.','Then open your eyes and observe silently for 60 seconds.','Record what you noticed, where you saw it, and how we can protect the area.'], ASSET.hearing)}
+    <div class="grid two">
+      <div class="task-card"><div class="task-title"><h3>Listen</h3><span class="task-tag">60s</span></div><div class="timer" id="listenTimer">60</div><button class="btn primary" onclick="startNamedTimer('listenTimer')">Start Listening</button></div>
+      <div class="task-card"><div class="task-title"><h3>Observe</h3><span class="task-tag">60s</span></div><div class="timer" id="observeTimer">60</div><button class="btn primary" onclick="startNamedTimer('observeTimer')">Start Observing</button></div>
+    </div>
+    <form id="surveyForm" onsubmit="submitSurvey(event)">
+      <div class="task-card"><div class="task-title"><h3>Area notes</h3><span class="task-tag">20 pts</span></div>
+        <div class="field"><label>Area surveyed</label><input name="area" required placeholder="e.g. School EcoTrail near the pond"></div>
+        <div class="field"><label>Sounds heard</label><textarea name="sounds" required placeholder="List natural and human-made sounds you heard."></textarea></div>
+        <div class="field"><label>Plants observed</label><textarea name="plants" required placeholder="List at least two plants or plant features you saw."></textarea></div>
+        <div class="field"><label>Animals or signs of animals</label><textarea name="animals" required placeholder="e.g. insects, birds, webs, holes, droppings, calls, none observed"></textarea></div>
+        <div class="field"><label>Where did you see them?</label><textarea name="distribution" required placeholder="Were they near water, along the path, under shade, on trees, or in groups?"></textarea></div>
+        <div class="field"><label>How are living things connected here?</label><textarea name="relationship" required placeholder="Examples: insects visiting flowers, plants giving shade, animals using plants as shelter, leaves/soil/water supporting life."></textarea></div>
+        <div class="field"><label>What human impact did you notice, and what can we do to protect this area?</label><textarea name="preserve" required placeholder="Examples: litter, trampling, noise, careful walking, leaving plants undamaged, keeping the area clean."></textarea></div>
+      </div>
+      <p class="small">Draft autosaves on this laptop.</p>
+      ${formActions('surveyForm','survey')}
+    </form>
+  </section>`);
+  restoreDraft('surveyForm','survey'); autoDraft('surveyForm','survey');
+}
+function startNamedTimer(id){
+  clearInterval(timerId); let left=60; const el=document.getElementById(id); if(!el)return; el.textContent=left;
+  timerId=setInterval(()=>{left--; el.textContent=left; if(left<=0){clearInterval(timerId); el.textContent='Done';}},1000)
+}
+function submitSurvey(e){
+  e.preventDefault(); const d=data(e.target); let score=0;
+  if(has(d.area,6))score+=2;
+  ['sounds','plants','animals'].forEach(k=>{ if(has(d[k],10)) score+=3; else if(has(d[k],3)) score+=1; });
+  if(has(d.distribution,12))score+=3; else if(has(d.distribution,4))score+=1;
+  if(has(d.relationship,12))score+=3; else if(has(d.relationship,4))score+=1;
+  if(has(d.preserve,15))score+=3; else if(has(d.preserve,4))score+=1;
+  submitMission('survey',Math.min(score,20),d);
+}
+
+function guide(asset,label){return `<details class="guide-box"><summary>View guide: ${label}</summary><img src="${asset}" alt="${label}"></details>`}
+function visualCard(src,alt){return `<div class="visual-card"><img src="${src}" alt="${alt}"></div>`}
+function renderPlant(){
+  render(`${topbar()}<section class="station-shell">
+    ${stationHeader('plant','Clause 2.2: study two plants')}
+    ${beforeBeginBox(['Use only the colour-pencil leaf rubbings first.','Type the plant name from the signboard, then reveal and self-check your answer.','The flower, fruit and seed study cards will appear only after the reveal.'], ASSET.plant)}
+    <form id="plantForm" onsubmit="submitPlant(event)">
+      ${stepBar('Leaf clue → Reveal → Study Plant A → Study Plant B',1,4)}
+      ${plantStudyBlock('A','Jambu',ASSET.plantA,ASSET.jambuFlower,ASSET.jambuFruit)}
+      ${plantStudyBlock('B','Lotus',ASSET.plantB,ASSET.lotusFlower,ASSET.lotusSeed)}
+      <p class="small">Plant name entry is a self-check and is not auto-marked. Short written notes are effort-marked and saved for badgework.</p>
+      ${formActions('plantForm','plant')}
+    </form>
+    <div class="station-tip"><span>Your plant study notes will appear in the badgework summary.</span><img src="${ASSET.catSleep}" alt=""></div>
+  </section>`);
+  restoreDraft('plantForm','plant'); initPlantPhases(); autoDraft('plantForm','plant');
+}
+function plantStudyBlock(letter,answer,clue,flower,fruit){
+  return `<div class="task-card plant-study-card">
+    <div class="task-title"><h3>Plant ${letter}</h3><span class="task-tag">15 pts</span></div>
+    <input type="hidden" name="revealed${letter}" id="revealed${letter}" value="">
+    <div class="notice"><strong>Step 1: Identify from the leaf clue only.</strong><br><span class="mini">The flower, fruit and seed cards are hidden until after your group has made a guess.</span></div>
+    ${visualCard(clue,`Plant ${letter} leaf rubbing`)}
+    <div class="field"><label>Type the plant name from the signboard</label><input name="typed${letter}" required placeholder="What plant do you think Plant ${letter} is?"></div>
+    <button class="btn secondary" type="button" onclick="revealPlant('${letter}','${answer}')">Reveal Plant ${letter}</button>
+
+    <div class="notice success hidden" id="reveal${letter}">Plant ${letter} is <strong>${answer}</strong>! Did you get it right?</div>
+
+    <div id="study${letter}" class="plant-study-followup hidden">
+      <h3 class="subheading">Step 2: Self-check</h3>
+      ${mcq(`self${letter}`,'Did your group get it right?',{'yes':'Yes','almost':'Almost','no':'No'})}
+
+      <h3 class="subheading">Step 3: Leaf study</h3>
+      ${guide(ASSET.guideArrangement,'Leaf arrangement')}
+      ${mcq(`arrangement${letter}`,'Leaf arrangement / how leaves are attached',{'alternate':'Alternate','opposite':'Opposite','whorled':'Whorled','single':'Not clearly seen / leaves on separate stalks'})}
+      ${guide(ASSET.guideShape,'Leaf shape')}
+      ${mcq(`shape${letter}`,'Leaf shape',{'round':'Round / circular','oval':'Oval / elliptic','lance':'Lance-shaped','heart':'Heart-shaped'})}
+      ${guide(ASSET.guideVenation,'Leaf venation')}
+      ${mcq(`venation${letter}`,'Leaf venation',{'parallel':'Parallel','pinnate':'Pinnate / Net-like','palmate':'Palmate / Radiating'})}
+      ${guide(ASSET.guideMargin,'Leaf margin')}
+      ${mcq(`margin${letter}`,'Leaf margin',{'smooth':'Smooth / Entire','toothed':'Toothed / Serrated','lobed':'Lobed'})}
+      <div class="field"><label>Describe the leaves in one sentence</label><textarea name="leafDesc${letter}" required placeholder="Describe what you observed about the leaves."></textarea></div>
+
+      <h3 class="subheading">Step 4: Flower and fruit/seed study</h3>
+      ${visualCard(flower,`Plant ${letter} flower`)}
+      <div class="field"><label>Describe one visible feature of the flower</label><textarea name="flowerDesc${letter}" required placeholder="e.g. colour, shape, number of petals, stamens..."></textarea></div>
+      ${mcq(`pollination${letter}`,'Most likely pollination method',{'insect':'Insect pollination','wind':'Wind pollination','water':'Water pollination'})}
+      ${visualCard(fruit,`Plant ${letter} fruit and seed`)}
+      <div class="field"><label>Describe one visible feature of the fruit/seeds</label><textarea name="seedDesc${letter}" required placeholder="Describe what you can see in the image."></textarea></div>
+      ${mcq(`dispersal${letter}`,'Most likely seed dispersal method',{'animal':'Animal dispersal','water':'Water dispersal','wind':'Wind dispersal','split':'Splitting / explosive dispersal'})}
+      <div class="field"><label>Suggest how one feature helps the plant survive or reproduce</label><textarea name="feature${letter}" required placeholder="Example: the flower may attract insects, or the fruit may be eaten by animals..."></textarea></div>
+    </div>
+  </div>`
+}
+function setPlantFollowup(letter,shown){
+  const panel=document.getElementById('study'+letter);
+  const reveal=document.getElementById('reveal'+letter);
+  if(panel){panel.classList.toggle('hidden',!shown); panel.querySelectorAll('input,select,textarea,button').forEach(el=>{el.disabled=!shown});}
+  if(reveal) reveal.classList.toggle('hidden',!shown);
+}
+function initPlantPhases(){
+  ['A','B'].forEach(L=>{
+    const marker=document.getElementById('revealed'+L);
+    setPlantFollowup(L, marker && marker.value==='1');
+  });
+}
+function revealPlant(letter,answer){
+  const f=document.getElementById('plantForm');
+  const typed=f && f.elements['typed'+letter];
+  if(!typed || !norm(typed.value)){
+    alert(`Type your guess for Plant ${letter} first, then reveal the answer.`);
+    if(typed) typed.focus();
+    return;
+  }
+  const marker=document.getElementById('revealed'+letter);
+  if(marker) marker.value='1';
+  setPlantFollowup(letter,true);
+  saveDraft('plantForm','plant');
+  alert(`Plant ${letter} is ${answer}! Did you get it right?`);
+  const self=f && f.elements['self'+letter];
+  if(self) self.focus();
+}
+function submitPlant(e){
+  e.preventDefault(); const d=data(e.target);
+  if(d.revealedA!=='1' || d.revealedB!=='1'){alert('Please reveal both Plant A and Plant B before submitting Plant Study.'); return;}
+  let score=0;
+  ['A','B'].forEach(L=>{
+    ['self','arrangement','shape','venation','margin'].forEach(k=>{if(d[k+L])score+=1});
+    ['leafDesc','flowerDesc','seedDesc'].forEach(k=>{if(effortAttempt(d[k+L]))score+=1});
+    if((L==='A' && d.pollinationA==='insect') || (L==='B' && d.pollinationB==='insect'))score+=2;
+    if((L==='A' && d.dispersalA==='animal') || (L==='B' && d.dispersalB==='water'))score+=2;
+    if(effortAttempt(d['feature'+L]))score+=3;
+  });
+  submitMission('plant',Math.min(Math.round(score),30),d);
+}
+
+
+function renderSmell(){
+  render(`${topbar()}<section class="station-shell">
+    ${stationHeader('smell','Observe and compare three mystery leaf scents')}
+    ${beforeBeginBox(['Smell gently without rubbing the leaves too hard.','Do not taste the leaves in this station.','Complete your scent notes first; they will be used in the station mini lesson.'], ASSET.smell)}
+    <form id="smellForm" onsubmit="submitSmell(event)">
+      ${stepBar('Leaf A → Leaf B → Leaf C → Compare',1,4)}
+      ${['A','B','C'].map(x=>`<div class="task-card"><div class="task-title"><h3>Mystery Leaf ${x}</h3><span class="task-tag">3 pts</span></div>
+        <div class="field"><label>Describe the smell using 2–3 words</label><input name="desc${x}" required placeholder="e.g. fresh, spicy, sharp, sweet, grassy"></div>
+        <div class="field"><label>What food, drink, or place does this smell remind you of?</label><input name="remind${x}" required placeholder="It reminds us of..."></div>
+        ${mcq(`strength${x}`,'How strong is the smell?',{'mild':'Mild','medium':'Medium','strong':'Strong'})}
+      </div>`).join('')}
+      <div class="task-card"><div class="task-title"><h3>Scent comparison</h3><span class="task-tag">6 pts</span></div>
+        <div class="field"><label>Which two leaves smelled most similar? What made them similar or different?</label><textarea name="compare" required placeholder="Leaf __ and Leaf __ were similar because... They were different because..."></textarea></div>
+        <div class="field"><label>Why might leaves have strong smells?</label><textarea name="why" required placeholder="Think about how smells may help plants survive or interact with animals."></textarea></div>
+      </div>
+      <p class="small">Station complete after submission. Keep your scent notes ready for the mini lesson.</p>
+      ${formActions('smellForm','smell')}
+    </form>
+  </section>`);
+  restoreDraft('smellForm','smell'); autoDraft('smellForm','smell');
+}
+function submitSmell(e){
+  e.preventDefault(); const d=data(e.target); let score=0;
+  ['A','B','C'].forEach(x=>{
+    if(effortAttempt(d['desc'+x]))score+=1;
+    if(effortAttempt(d['remind'+x]))score+=1;
+    if(d['strength'+x])score+=1;
+  });
+  if(effortAttempt(d.compare))score+=3;
+  if(containsAny(d.why,REASON_WORDS))score+=3; else if(effortAttempt(d.why))score+=2;
+  submitMission('smell',Math.min(score,15),d);
+}
+function renderTaste(){
+  renderTasteQuestions();
+}
+function renderTasteQuestions(){
+  render(`${topbar()}<section class="station-shell">
+    ${stationHeader('taste','Taste only the facilitator-provided mystery leaf sample')}
+    ${beforeBeginBox(['Only taste the sample given by the facilitator.','Do not taste any other leaves, flowers, fruits or seeds.','Keep your taste notes ready for the mini lesson after this station.'], ASSET.taste)}
+    <form id="tasteForm" onsubmit="submitTaste(event)">
+      <div class="task-card"><div class="task-title"><h3>Mystery Taste Notes</h3><span class="task-tag">10 pts</span></div>
+        <div class="field"><label>Before tasting, what do you predict the mystery leaf might taste like?</label><textarea name="prediction" required placeholder="We predict it might taste..."></textarea></div>
+        <div class="field"><label>After tasting, describe the taste as accurately as you can.</label><textarea name="tasteDesc" required placeholder="Describe the strength, timing and aftertaste."></textarea></div>
+        <div class="field"><label>How was the taste similar to or different from sugar?</label><textarea name="compareSugar" required placeholder="Compared with sugar, it was..."></textarea></div>
+        <div class="field"><label>Why might humans be interested in a leaf with this taste?</label><textarea name="use" required placeholder="Think about how humans may use plant features in food, drinks or daily life."></textarea></div>
+        <div class="field"><label>Why should we only taste plant samples given by a trusted adult?</label><textarea name="safety" required placeholder="Explain why unknown plants may not be safe to taste."></textarea></div>
+        <div class="field"><label>What is one safe and respectful behaviour when studying plants? Explain why it matters.</label><textarea name="care" required placeholder="A good behaviour is... This matters because..."></textarea></div>
+      </div>
+      <div class="form-actions single"><button class="btn" type="submit">Submit Mission</button></div>
+    </form>
+  </section>`);
+}
+function submitTaste(e){
+  e.preventDefault(); const d=data(e.target); let score=0;
+  if(effortAttempt(d.prediction))score+=1;
+  if(effortAttempt(d.tasteDesc))score+=2;
+  if(effortAttempt(d.compareSugar))score+=2;
+  if(effortAttempt(d.use))score+=2;
+  if(effortAttempt(d.safety))score+=2;
+  if(effortAttempt(d.care))score+=1;
+  submitMission('taste',Math.min(score,10),d);
+}
+function renderSight(){
+  render(`${topbar()}<section class="station-shell">
+    ${stationHeader('sight','Facilitator-scored timed memory challenge')}
+    ${beforeBeginBox(['Facilitator uses a timer. Suggested viewing time: 45–60 seconds.','Give every group the same viewing time. Cover the tray when time is up.','Wait for the facilitator before submitting this station.'], ASSET.kim)}
+    <form onsubmit="submitSight(event)">
+      <div class="task-card"><div class="task-title"><h3>Kim’s Tray Score</h3></div>
+        <div class="input-grid">
+          ${selectScore('base','Recall score',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])}
+          ${selectScore('bonus','Additional facilitator score',[0,1,2,3,4,5])}
+        </div>
+      </div>
+      <div class="facilitator-box"><div class="field"><label>Facilitator PIN</label><input name="pin" type="password" required></div></div>
+      <div class="form-actions single"><button class="btn" type="submit">Submit Score</button></div>
+    </form>
+  </section>`);
+}
+function selectScore(name,label,vals){return `<div class="field"><label>${label}</label><select name="${name}" required>${placeholder()}${vals.map(v=>`<option value="${v}">${v}</option>`).join('')}</select></div>`}
+function submitSight(e){
+  e.preventDefault(); const d=data(e.target); if(d.pin!==FACILITATOR_PIN){alert('Incorrect PIN.');return}
+  const score=Number(d.base||0)+Number(d.bonus||0);
+  submitMission('sight',score,d);
+}
+
+function renderPromise(){
+  render(`${topbar()}<section class="station-shell">
+    ${stationHeader('promise','Turn today’s observations into a Good Turn for Nature message')}
+    ${beforeBeginBox(['Use one observation from the EcoTrail or school garden.','Choose one living thing or habitat feature worth protecting.','Create a short Good Turn for Nature message your group could share.'], ASSET.promise)}
+    <form id="promiseForm" onsubmit="submitPromise(event)">
+      <div class="task-card"><div class="task-title"><h3>Good Turn for Nature</h3><span class="task-tag">10 pts</span></div>
+        <div class="field"><label>One living thing or habitat feature we noticed</label><textarea name="noticed" required placeholder="We noticed..."></textarea></div>
+        <div class="field"><label>Why it matters</label><textarea name="matters" required placeholder="It matters because..."></textarea></div>
+        <div class="field"><label>One problem or human impact it may face</label><textarea name="problem" required placeholder="A problem it may face is..."></textarea></div>
+        <div class="field"><label>One action Guides can take to protect it</label><textarea name="action" required placeholder="Guides can help by..."></textarea></div>
+        <div class="field"><label>Our Good Turn for Nature message</label><textarea name="message" required placeholder="We can do a Good Turn for Nature by..."></textarea></div>
+      </div>
+      <p class="small">Draft autosaves on this laptop.</p>
+      ${formActions('promiseForm','promise')}
+    </form>
+  </section>`);
+  restoreDraft('promiseForm','promise'); autoDraft('promiseForm','promise');
+}
+function submitPromise(e){
+  e.preventDefault(); const d=data(e.target); let score=0;
+  ['noticed','matters','problem','action','message'].forEach(k=>{if(effortAttempt(d[k]))score+=2});
+  submitMission('promise',Math.min(score,10),d);
+}
+function mcq(name,label,opts){
+  return `<div class="field"><label>${label}</label><select name="${name}" required>${placeholder()}${Object.entries(opts).map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select></div>`
+}
+function saveDraft(formId,id,notify=false){
+  const f=document.getElementById(formId); if(!f)return;
+  state.answers[id+'_draft']=data(f); save(); if(notify)alert('Draft saved.');
+}
+function autoDraft(formId,id){
+  const f=document.getElementById(formId); if(!f)return;
+  f.addEventListener('input',()=>saveDraft(formId,id));
+  f.addEventListener('change',()=>saveDraft(formId,id));
+}
+function restoreDraft(formId,id){
+  const d=state.answers[id+'_draft']; if(!d)return;
+  const f=document.getElementById(formId);
+  Object.entries(d).forEach(([k,v])=>{const el=f.elements[k]; if(!el)return; if(el.type==='checkbox')el.checked=!!v; else el.value=v});
+}
+function renderFinal(){
+  const t=total();
+  const rank=t>=90?'Master Naturalists':t>=75?'EcoTrail Naturalists':t>=55?'Sense Quest Explorers':'Budding Naturalists';
+  render(`${topbar()}<section class="paper main-card">
+    <div class="result-card">
+      <img class="cat-sleep" src="${ASSET.catSleep}" alt="">
+      <div class="stamp">🏷️ ${rank}</div>
+      <h1 class="h1">Final Score</h1>
+      <div class="scorebig">${t} pts</div>
+      <p class="small">${allStationsComplete()?'Use the Badgework Summary pages to screenshot your Naturalist Badge notes.':'Complete all stations to unlock the Badgework Summary.'}</p>
+    </div>
+    <table class="table"><thead><tr><th>Mission</th><th>Score</th></tr></thead><tbody>${Object.entries(MISSIONS).map(([id,m])=>`<tr><td>${m.name}</td><td>${id==='sight'?`${state.scores[id]??0} pts`:`${state.scores[id]??0} / ${maxLabel(id)}`}</td></tr>`).join('')}</tbody></table>
+    <div class="btnrow">${allStationsComplete()?`<button class="btn primary" onclick="renderBadgeSummary(1)">View Badgework Summary</button>`:''}<button class="btn secondary" onclick="loadLeaderboard()">Refresh Leaderboard</button><button class="btn secondary" onclick="renderBoard()">Back</button></div>
+    <div id="leaderboard"></div>
+  </section>`)
+}
+function ans(section,key,fallback='—'){
+  const d=state.answers[section]||{};
+  return esc(d[key]||fallback);
+}
+function labelValue(label,value){return `<div class="summary-row"><strong>${label}</strong><span>${value||'—'}</span></div>`}
+function renderBadgeSummary(page=1){
+  if(!allStationsComplete()){render(`${topbar()}<section class="paper main-card"><div class="result-card"><div class="stamp">Badgework Summary Locked</div><h1 class="h1">Complete all stations first</h1><p class="small">The badgework pages unlock after all stations are completed.</p><button class="btn primary" onclick="renderBoard()">Back to Journey</button></div></section>`); return}
+  const nav=`<div class="summary-nav"><button class="btn secondary" onclick="renderFinal()">Back</button>${page>1?`<button class="btn secondary" onclick="renderBadgeSummary(${page-1})">Previous</button>`:''}${page<3?`<button class="btn" onclick="renderBadgeSummary(${page+1})">Next</button>`:''}</div>`;
+  let content='';
+  if(page===1){
+    content=`<div class="summary-card screenshot-card"><h1>Naturalist Badge – Clause 1</h1><h2>EcoTrail Area Survey</h2>
+      <p class="screenshot-note">Screenshot this page for your badgework.</p>
+      ${labelValue('Group',esc(displayName()))}
+      ${labelValue('Area surveyed',ans('survey','area'))}
+      ${labelValue('Sounds heard',ans('survey','sounds'))}
+      ${labelValue('Plants observed',ans('survey','plants'))}
+      ${labelValue('Animals / signs',ans('survey','animals'))}
+      ${labelValue('Where did you see them?',ans('survey','distribution'))}
+      ${labelValue('How are living things connected here?',ans('survey','relationship'))}
+      ${labelValue('Human impact and protection action',ans('survey','preserve'))}
+    </div>`;
+  } else if(page===2){
+    content=plantSummaryCard('A','Jambu');
+  } else {
+    content=`${plantSummaryCard('B','Lotus')}
+      <div class="summary-card screenshot-card"><h1>Extension Clause Starter</h1><h2>Good Turn for Nature</h2>
+      <p class="screenshot-note">Screenshot this page and expand these points into your Good Turn for Nature write-up.</p>
+      ${labelValue('Living thing / habitat feature',ans('promise','noticed'))}
+      ${labelValue('Why it matters',ans('promise','matters'))}
+      ${labelValue('Problem / human impact',ans('promise','problem'))}
+      ${labelValue('Action Guides can take',ans('promise','action'))}
+      ${labelValue('Good Turn for Nature message',ans('promise','message'))}
+    </div>`;
+  }
+  render(`${topbar()}<section class="station-shell">${content}${nav}</section>`)
+}
+function plantSummaryCard(L,name){
+  return `<div class="summary-card screenshot-card"><h1>Naturalist Badge – Clause 2.2</h1><h2>Plant ${L} Study: ${name}</h2>
+    <p class="screenshot-note">Screenshot this page for your badgework.</p>
+    ${labelValue('Group',esc(displayName()))}
+    ${labelValue('Plant typed from signboard',ans('plant','typed'+L))}
+    ${labelValue('Self-check',ans('plant','self'+L))}
+    ${labelValue('Leaf arrangement',plantOptionLabel('arrangement',(state.answers.plant||{})['arrangement'+L]))}
+    ${labelValue('Leaf shape',plantOptionLabel('shape',(state.answers.plant||{})['shape'+L]))}
+    ${labelValue('Leaf venation',plantOptionLabel('venation',(state.answers.plant||{})['venation'+L]))}
+    ${labelValue('Leaf margin',plantOptionLabel('margin',(state.answers.plant||{})['margin'+L]))}
+    ${labelValue('Leaf description',ans('plant','leafDesc'+L))}
+    ${labelValue('Flower description',ans('plant','flowerDesc'+L))}
+    ${labelValue('Pollination method',ans('plant','pollination'+L))}
+    ${labelValue('Fruit / seed description',ans('plant','seedDesc'+L))}
+    ${labelValue('Seed dispersal method',ans('plant','dispersal'+L))}
+    ${labelValue('Helpful feature',ans('plant','feature'+L))}
+  </div>`
+}
+function post(id,score,answers){
+  if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes('PASTE_')) return;
+  const p={timestamp:new Date().toISOString(),teamId:`G${state.slot}`,teamName:state.groupName,stationId:id,stationName:MISSIONS[id].name,score,maxScore:MISSIONS[id].max,answers};
+  try{fetch(GAS_WEB_APP_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(p)})}catch(e){}
+}
+function loadLeaderboard(){
+  const box=document.getElementById('leaderboard');
+  if(!GAS_WEB_APP_URL||GAS_WEB_APP_URL.includes('PASTE_')){box.innerHTML='<div class="notice">Add Apps Script URL to use live leaderboard.</div>';return}
+  const cb='lb_'+Date.now();
+  window[cb]=res=>{delete window[cb]; const rows=(res&&res.rows)||[]; box.innerHTML=`<table class="table"><thead><tr><th>Rank</th><th>Group</th><th>Total</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.teamName||r.teamId)}</td><td>${r.total}</td></tr>`).join('')}</tbody></table>`};
+  const s=document.createElement('script'); s.src=GAS_WEB_APP_URL+`?action=leaderboard&callback=${cb}`; document.body.appendChild(s);
+}
+init();
+
+</script>
+</body>
+</html>
